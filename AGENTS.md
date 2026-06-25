@@ -14,3 +14,8 @@
    - `git diff` to review before committing
    - Commit with descriptive message
 7. **If something goes wrong**, use `git restore <file>` to recover — do NOT delete and recreate
+8. **NEVER commit sensitive files** — check `.gitignore` before staging. Sensitive files include:
+   - `config.json` (contains API keys)
+   - `cookies.txt`
+   - `.env`
+   - Any file with secrets/credentials
