@@ -1,0 +1,14 @@
+[Unit]
+Description=VTM MCP Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/vtm
+ExecStart=/usr/bin/python3 /root/vtm/mcp_server.py --transport sse --host 0.0.0.0 --port 8080
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
