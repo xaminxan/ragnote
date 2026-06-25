@@ -5,6 +5,8 @@ __pycache__/
 venv/
 .venv/
 cookies.txt
+config.json
+.clip_checkpoint.json
 uploads/
 output/
 *.log

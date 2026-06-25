@@ -1,0 +1,41 @@
+{
+  "llm": {
+    "model": "your-model-name",
+    "base_url": "https://api.example.com/v1",
+    "api_key": "your-api-key-here",
+    "temperature": 0.3,
+    "timeout": 600
+  },
+  "vlm": {
+    "model": "your-vlm-model",
+    "base_url": "https://api.example.com/v1",
+    "api_key": "your-api-key-here",
+    "max_tokens": 1000,
+    "temperature": 0.3
+  },
+  "ocr": {
+    "batch_size": 20,
+    "timeout": 600,
+    "dpi": 150,
+    "lang": "ch"
+  },
+  "processing": {
+    "pages_per_chunk": 30,
+    "max_ocr_text_length": 35000,
+    "context_window": 2000,
+    "enable_checkpoint": true,
+    "max_global_review_rounds": 3,
+    "fast_mode": false,
+    "max_chunk_summaries": 20
+  },
+  "output": {
+    "save_individual": true,
+    "save_merged": true,
+    "include_toc": true,
+    "include_concept_index": true,
+    "include_timeline": true
+  },
+  "obsidian": {
+    "path": "/path/to/your/obsidian/vault"
+  }
+}
