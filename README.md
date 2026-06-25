@@ -53,7 +53,7 @@ python main.py batch sop ./pdf_folder
 python main.py sop book.pdf --remerge
 ```
 
-### 3. 视频/网页转笔记
+### 3. 视频/网页/音频转笔记
 
 ```bash
 # Bilibili 视频（自动获取字幕，无字幕时音频转录）
@@ -65,9 +65,14 @@ python main.py clip https://youtube.com/watch?v=xxx
 # 任意网页
 python main.py clip https://example.com/article
 
-# 指定 Obsidian 保存目录
-python main.py clip https://b23.tv/xxxxx --inbox "D:\notes"
+# 本地音频文件（转录+总结）
+python main.py clip D:\audio\lecture.mp3
+
+# 本地音频文件夹（批量处理）
+python main.py clip D:\audio\ --inbox "D:\notes"
 ```
+
+**支持的音频格式：** mp3, wav, m4a, ogg, flac, wma
 
 **批量处理播放列表/合集：**
 
@@ -79,7 +84,7 @@ python main.py clip "https://youtube.com/watch?v=xxx&list=PLxxxx"
 python main.py clip https://www.bilibili.com/video/BVxxx?sid=xxx
 ```
 
-**断点续传：** 处理中断后，重新运行相同命令会自动跳过已完成的视频。
+**断点续传：** 处理中断后，重新运行相同命令会自动跳过已完成的项目。
 
 ### 4. API 服务
 

@@ -884,6 +884,47 @@ def fetch_youtube_playlist(url):
         return []
 
 
+def _transcribe_local_audio(audio_path):
+    """转录本地音频文件"""
+    import whisper
+    print(f"  -> 加载Whisper模型...")
+    model = whisper.load_model("base", device="cpu")
+    print(f"  -> 模型加载完成，开始转录（预计1-3分钟）...")
+    result = model.transcribe(audio_path, language="zh")
+    print(f"  ✅ 转录完成")
+    return result["text"]
+
+
+def _process_local_audio(file_path, inbox, llm_model, llm_base_url, llm_api_key):
+    """处理单个本地音频文件"""
+    filename = os.path.basename(file_path)
+    title = os.path.splitext(filename)[0]
+    
+    print(f"\n🎵 处理: {filename}")
+    
+    # 检查笔记是否已存在
+    if check_note_exists(title, inbox):
+        print(f"  ⏭️ 笔记已存在，跳过")
+        return True
+    
+    try:
+        raw_text = _transcribe_local_audio(file_path)
+        if raw_text:
+            summary = summarize_with_llm(raw_text[:15000], title, llm_model, llm_base_url, llm_api_key)
+            if summary:
+                save_to_obsidian(summary, inbox)
+                return True
+            else:
+                print(f"  ❌ LLM总结失败")
+                return False
+        else:
+            print(f"  ❌ 转录失败")
+            return False
+    except Exception as e:
+        print(f"  ❌ 处理失败: {str(e)[:80]}")
+        return False
+
+
 def run(args):
     target_url = args.url
     inbox = getattr(args, "inbox", None)
@@ -892,10 +933,63 @@ def run(args):
     llm_api_key = getattr(args, "llm_api_key", None)
 
     print("=" * 40)
-    print("VTM - 视频/网页 → 结构化笔记")
+    print("VTM - 视频/网页/音频 → 结构化笔记")
     print("=" * 40)
 
-    # 检测 YouTube 播放列表
+    # 检测本地文件或文件夹
+    if os.path.isfile(target_url) and target_url.lower().endswith(('.mp3', '.wav', '.m4a', '.ogg', '.flac', '.wma')):
+        # 单个音频文件
+        success = _process_local_audio(target_url, inbox, llm_model, llm_base_url, llm_api_key)
+        print(f"\n{'='*40}")
+        print(f"{'✅ 完成' if success else '❌ 失败'}")
+        return
+    
+    if os.path.isdir(target_url):
+        # 文件夹批量处理
+        audio_files = sorted([
+            os.path.join(target_url, f) for f in os.listdir(target_url)
+            if f.lower().endswith(('.mp3', '.wav', '.m4a', '.ogg', '.flac', '.wma'))
+            and os.path.isfile(os.path.join(target_url, f))
+        ])
+        
+        if not audio_files:
+            print(f"❌ 文件夹中没有音频文件: {target_url}")
+            return
+        
+        print(f"📁 批量处理模式: {len(audio_files)} 个音频文件\n")
+        
+        checkpoint = load_checkpoint()
+        success = 0
+        failed = 0
+        skipped = 0
+        
+        for idx, file_path in enumerate(audio_files, 1):
+            filename = os.path.basename(file_path)
+            ck_key = f"local_{filename}"
+            
+            if ck_key in checkpoint:
+                print(f"  [{idx}/{len(audio_files)}] ⏭️ {filename}")
+                skipped += 1
+                continue
+            
+            print(f"\n[{idx}/{len(audio_files)}] {filename}")
+            
+            if _process_local_audio(file_path, inbox, llm_model, llm_base_url, llm_api_key):
+                save_checkpoint(ck_key)
+                success += 1
+            else:
+                failed += 1
+            
+            if idx < len(audio_files):
+                time.sleep(2)
+        
+        print(f"\n{'='*40}")
+        print(f"📊 批量处理完成")
+        print(f"   成功: {success} 个")
+        print(f"   失败: {failed} 个")
+        print(f"   跳过: {skipped} 个")
+        print(f"{'='*40}")
+        return
 
     # 检测 YouTube 播放列表
     if is_youtube_playlist(target_url):

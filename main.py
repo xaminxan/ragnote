@@ -33,14 +33,17 @@ VTM - PDF笔记生成工具 v{VERSION}
           python main.py batch sop <文件夹>              — 批量SOP提取
           python main.py batch process <文件夹> -o notes — 批量转笔记到指定目录
 
-  clip      YouTube/Bilibili视频/网页 → 结构化笔记
-    参数: <URL> [--inbox <Obsidian目录>]
+  clip      视频/网页/音频 → 结构化笔记
+    参数: <URL或文件路径> [--inbox <Obsidian目录>]
     示例: python main.py clip https://youtube.com/watch?v=xxx
           python main.py clip https://www.bilibili.com/video/BV1xx411c7mD
           python main.py clip https://example.com/article --inbox "D:\\notes"
+          python main.py clip D:\\audio\\lecture.mp3
+          python main.py clip D:\\audio\\ --inbox "D:\\notes"
     
     注意: YouTube视频需要cookies.txt文件（从浏览器导出）
           Bilibili视频优先获取字幕，无字幕时自动音频转录
+          本地音频文件支持: mp3, wav, m4a, ogg, flac, wma
 
   serve     启动FastAPI服务（Web/非AI客户端）
     参数: [--host <地址>] [--port <端口>]

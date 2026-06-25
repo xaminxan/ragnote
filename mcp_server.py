@@ -256,12 +256,12 @@ def batch_process(
 @mcp.tool()
 def clip_url(url: str, inbox: str = "",
              llm_model: str = "", llm_base_url: str = "", llm_api_key: str = "") -> str:
-    """视频/网页URL转结构化笔记。
+    """视频/网页/音频转结构化笔记。
 
-    支持YouTube、Bilibili视频（自动获取字幕或音频转录），以及任意网页内容。
+    支持YouTube、Bilibili视频（自动获取字幕或音频转录），任意网页内容，以及本地音频文件。
 
     Args:
-        url: 视频或网页的URL
+        url: 视频/网页URL，或本地音频文件/文件夹路径（支持mp3, wav, m4a等）
         inbox: Obsidian笔记保存目录，留空则使用默认目录
         llm_model: 可选，覆盖默认LLM模型名称
         llm_base_url: 可选，覆盖默认LLM API地址

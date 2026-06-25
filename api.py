@@ -45,7 +45,7 @@ class SopRequest(BaseModel):
 
 
 class ClipRequest(BaseModel):
-    url: str = Field(..., description="视频/网页URL")
+    url: str = Field(..., description="视频/网页URL，或本地音频文件/文件夹路径")
     inbox: Optional[str] = Field(None, description="Obsidian保存目录")
 
 
