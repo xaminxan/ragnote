@@ -17,8 +17,8 @@
 # 安装依赖
 pip install -r requirements.txt
 
-# 初始化配置
-python main.py config init
+# 初始化配置（复制模板并填入你的API密钥）
+cp config.example.json config.json
 
 # 查看配置
 python main.py config show
