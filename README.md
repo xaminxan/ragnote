@@ -14,8 +14,11 @@
 ## 快速开始
 
 ```bash
-# 安装依赖
+# 安装依赖（核心功能）
 pip install -r requirements.txt
+
+# 或安装全部依赖（含API服务和MCP Server）
+pip install -r requirements-all.txt
 
 # 初始化配置（复制模板并填入你的API密钥）
 cp config.example.json config.json
