@@ -9,6 +9,8 @@ config.json
 .clip_checkpoint.json
 uploads/
 output/
+2/
+*.pdf
 *.log
 .vscode/
 .idea/
