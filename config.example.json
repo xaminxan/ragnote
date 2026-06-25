@@ -36,6 +36,6 @@
     "include_timeline": true
   },
   "obsidian": {
-    "path": "/path/to/your/obsidian/vault"
+    "path": "D:\\path\\to\\your\\obsidian\\vault"
   }
 }
